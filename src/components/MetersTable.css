@@ -1,0 +1,199 @@
+.meters {
+  width: 100%;
+}
+
+.meters__title {
+  margin: 0 0 16px;
+
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 133%;
+  color: #1f2939;
+}
+
+.meters__container {
+  display: flex;
+  flex-direction: column;
+
+  height: 944px;
+
+  border: 1px solid #e0e5eb;
+  border-radius: 12px;
+  overflow: hidden;
+
+  background: #fff;
+}
+
+.meters__table-wrapper {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.meters__table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.meters__thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+
+  background: #f0f3f7;
+}
+
+.meters__thead th {
+  padding: 8px 12px;
+
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 123%;
+  color: #697180;
+  text-align: left;
+
+  background: #f0f3f7;
+}
+
+.meters__table tbody tr {
+  height: 52px;
+
+  border-bottom: 1px solid #e0e5eb;
+  background: #fff;
+}
+
+.meters__table tbody tr:hover {
+  background: #f0f3f7;
+}
+
+.meters__table td {
+  padding: 0 12px;
+
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 143%;
+  color: #1f2939;
+}
+
+.meter-type {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.actions-cell {
+  width: 52px;
+  padding: 0 6px;
+  text-align: center;
+}
+
+.delete-button {
+  width: 40px;
+  height: 40px;
+
+  border: none;
+  display: inline-block;
+  cursor: pointer;
+
+  background: url('../assets/icons/delete-default.svg') center no-repeat;
+
+  opacity: 0;
+  visibility: hidden;
+}
+
+.meters__table tbody tr:hover .delete-button {
+  opacity: 1;
+  visibility: visible;
+}
+
+.delete-button:hover {
+  background-image: url('../assets/icons/delete-hover.svg');
+  background-size: contain;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+
+  min-height: 48px;
+  padding: 8px 16px;
+
+  border-top: 1px solid #e0e5eb;
+  background: #fff;
+}
+
+.pagination__button {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+
+  border: 1px solid #d9dee7;
+  border-radius: 6px;
+  background: #fff;
+
+  font-family: var(--font-family);
+  font-size: 14px;
+  color: #344054;
+
+  cursor: pointer;
+}
+
+.pagination__button:hover {
+  background: #f0f3f7;
+}
+
+.pagination__button--active {
+  background: #f0f3f7;
+  font-weight: 500;
+}
+
+.pagination__ellipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 32px;
+  height: 32px;
+
+  font-family: var(--font-family);
+  font-size: 14px;
+  color: #697180;
+}
+
+.header {
+  border-radius: 0 0 32px 32px;
+  background: #000;
+  height: 100px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-bottom: 64px;
+  z-index: 2;
+}
+
+.intro__title {
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 96px;
+  color: #1f2939;
+  padding-top: 64px;
+}
+
+.intro__subtitle {
+  padding: 0 16px;
+  font-family: var(--second-family);
+  font-weight: 500;
+  font-size: 48px;
+  color: #495566;
+}
+
+.main {
+  padding: 0 16px;
+}
