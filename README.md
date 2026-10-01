@@ -1,73 +1,89 @@
-# React + TypeScript + Vite
+# Water Meters
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Тестовое frontend-задание: приложение для просмотра и удаления счётчиков воды. Данные загружаются из внешнего API.
 
-Currently, two official plugins are available:
+## Возможности
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Таблица с порядковым номером, типом счётчика, датой установки, признаком автоматического счётчика, показаниями, адресом и примечанием.
+- Типы ГВС и ХВС с иконками; неизвестный тип отображается как «—».
+- Даты в формате локали `ru-RU`. В колонке «Текущие показания» отображается последний элемент массива `initial_values`; при отсутствии значения — «—».
+- Загрузка адресов по идентификаторам помещений и кэширование в MobX-State-Tree на время работы приложения.
+- Удаление счётчика через API с последующей перезагрузкой текущей страницы.
+- Серверная пагинация через `limit` и `offset`, по 20 записей на страницу; сквозная нумерация строк.
+- Сообщения о первоначальной загрузке и ошибках запросов.
 
-## React Compiler
+## Стек
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Версии указаны по диапазонам из `package.json`.
 
-## Expanding the ESLint configuration
+| Технология | Версия / назначение |
+| --- | --- |
+| React, React DOM | ^19.2.7 — интерфейс |
+| TypeScript | ~6.0.2 — типизация |
+| Vite | ^8.1.1 — dev-сервер и сборка |
+| MobX | ^6.16.1 — реактивное состояние |
+| MobX-State-Tree | ^7.3.1 — модели, store и асинхронные actions через `flow` |
+| mobx-react-lite | ^4.1.1 — подключение компонентов через `observer` |
+| CSS, SVG | Стили и иконки |
+| ESLint, Prettier | Проверка кода и инструмент форматирования |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+HTTP-запросы выполняются через встроенный `fetch`.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Структура
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+| Путь | Назначение |
+| --- | --- |
+| `src/main.tsx` | Точка входа, подключение глобальных стилей и StrictMode |
+| `src/App.tsx` | Первоначальная загрузка, отображение ошибок и таблицы |
+| `src/components/MetersTable.tsx` | Таблица, форматирование полей, удаление и кнопки пагинации |
+| `src/components/MetersTable.css` | Стили таблицы и страницы |
+| `src/store/metersStore.ts` | MeterModel, MeterStore, загрузка, кэш адресов, удаление и состояние пагинации |
+| `src/api/meters.ts` | Запрос списка и удаление счётчиков |
+| `src/api/areas.ts` | Запрос адресов помещений |
+| `src/types/meter.ts` | TypeScript-интерфейсы счётчиков и ответа API |
+| `src/assets/` | Графические ресурсы |
+| `src/index.css` | Глобальные стили |
+| `vite.config.ts` | React-плагин и proxy для API |
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+## Запуск
+
+Нужны Node.js и npm. Например, Node.js 22.13+ в ветке 22.x соответствует требованиям Vite и ESLint, зафиксированным в `package-lock.json`. Собственный диапазон `engines` в `package.json` не задан.
+
+```bash
+git clone https://github.com/Maximilian400/water-meters.git
+cd water-meters
+npm ci
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Откройте адрес, выведенный Vite в терминале.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+| Команда | Назначение |
+| --- | --- |
+| `npm run dev` | Запуск dev-сервера |
+| `npm run build` | Проверка TypeScript через `tsc -b` и сборка в `dist/` |
+| `npm run lint` | Проверка ESLint |
+| `npm run preview` | Локальный просмотр готовой сборки после `npm run build` |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+## API
+
+В `vite.config.ts` настроен dev-proxy: запросы с префиксом `/api` направляются на `https://showroom.eis24.me`, а префикс удаляется.
+
+| Метод | Путь на стороне внешнего API | Назначение |
+| --- | --- | --- |
+| GET | `/c300/api/v4/test/meters/?limit=20&offset=0` | Загрузка страницы счётчиков |
+| GET | `/c300/api/v4/test/areas/?id__in=<id>` | Загрузка адресов; параметр повторяется для нескольких ID |
+| DELETE | `/c300/api/v4/test/meters/<meterId>/` | Удаление счётчика |
+
+Адрес API задан в конфигурации Vite; настройки через переменные окружения не реализованы. Backend в репозитории отсутствует.
+
+## Ограничения текущей реализации
+
+- Для загрузки и удаления нужен доступный внешний API. Удаление отправляет реальный DELETE-запрос без диалога подтверждения.
+- При числе страниц больше четырёх кнопки имеют вид `1 2 3 … N`. Промежуточные страницы между третьей и последней через интерфейс недоступны.
+- После удаления последней записи на странице номер страницы автоматически не корректируется.
+- Кэш адресов хранится только в памяти и сбрасывается при перезагрузке приложения.
+- Создание, редактирование, поиск и фильтрация счётчиков не реализованы.
+- Отмена запросов и защита от устаревших ответов при быстром переключении страниц не реализованы.
+- Proxy описан в `server.proxy` для режима разработки. Для публикации сборки требуется отдельно настроить обработку путей `/api`; production-конфигурация backend/proxy в репозитории отсутствует.
+- Автоматизированных тестов и команды `test` в репозитории нет.
